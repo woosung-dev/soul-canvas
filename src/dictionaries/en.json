@@ -1,0 +1,11 @@
+{
+  "home": {
+    "title": "Welcome to VibeCheck",
+    "description": "Discover your personality vibe."
+  },
+  "quiz": {
+    "start": "Start Quiz",
+    "next": "Next",
+    "result": "Your Result"
+  }
+}

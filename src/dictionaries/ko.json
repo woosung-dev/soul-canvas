@@ -1,0 +1,11 @@
+{
+  "home": {
+    "title": "VibeCheck에 오신 것을 환영합니다",
+    "description": "당신의 성향을 알아보세요."
+  },
+  "quiz": {
+      "start": "퀴즈 시작하기",
+      "next": "다음",
+      "result": "결과 확인하기"
+  }
+}
