@@ -58,6 +58,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+import { AdSenseUnit } from '@/components/ads/AdSenseUnit';
+
+// ... (keep existing imports)
+
+// ... (keep existing generateMetadata)
+
 export default async function ResultPage({ params }: Props) {
   const { quizId, resultId, lang } = await params;
   const quiz = quizzes[quizId];
@@ -72,6 +78,10 @@ export default async function ResultPage({ params }: Props) {
       <QuizHeader title="VibeCheck" />
       <div className="flex-1 flex flex-col items-center justify-center p-4 w-full animate-in fade-in duration-700">
         <ResultCard result={result} />
+        
+        {/* Ad Unit Middle */}
+        <AdSenseUnit slotId="0987654321" className="w-full max-w-sm mt-6" />
+
         <ShareButtons />
         
         <a 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackEvent, ANALYTICS_EVENTS } from '@/lib/analytics';
 
 export function ShareButtons() {
   const [copied, setCopied] = useState(false);
@@ -9,6 +10,7 @@ export function ShareButtons() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
+      trackEvent(ANALYTICS_EVENTS.SHARE, { method: 'copy_link' });
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy', err);
@@ -22,6 +24,7 @@ export function ShareButtons() {
           title: document.title,
           url: window.location.href,
         });
+        trackEvent(ANALYTICS_EVENTS.SHARE, { method: 'native' });
       } catch (err) {
         console.error('Error sharing', err);
       }

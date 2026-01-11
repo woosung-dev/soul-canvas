@@ -9,6 +9,8 @@ import { ProgressBar } from './ProgressBar';
 
 import { useRouter, useParams } from 'next/navigation';
 import { calculateResult } from '@/lib/quiz-logic';
+import { trackEvent, ANALYTICS_EVENTS } from '@/lib/analytics';
+import { AdSenseUnit } from '@/components/ads/AdSenseUnit';
 
 interface QuizScreenProps {
   quizData: QuizConfig;
@@ -19,20 +21,24 @@ export function QuizScreen({ quizData }: QuizScreenProps) {
   const router = useRouter();
   const params = useParams(); // to get current lang
 
-  // Initialize quiz store with data
+  // Initialize quiz store and track start
   useEffect(() => {
     setQuiz(quizData);
+    trackEvent(ANALYTICS_EVENTS.QUIZ_START, { quiz_id: quizData.id });
   }, [quizData, setQuiz]);
 
   // Handle completion and redirect
   useEffect(() => {
     if (!config) return;
     
-    // Check if we answered everything (simple check)
-    // Note: currentStep is 0-indexed. If it equals length, we are "done".
     if (currentStep === config.questions.length) {
         const resultValue = calculateResult(config, answers);
-        // Assuming lang is available in params, defaulting to 'ko' if not
+        
+        trackEvent(ANALYTICS_EVENTS.QUIZ_COMPLETE, { 
+          quiz_id: config.id, 
+          result: resultValue 
+        });
+
         const lang = params?.lang || 'ko'; 
         router.push(`/${lang}/result/${config.id}/${resultValue}`);
     }
@@ -52,12 +58,24 @@ export function QuizScreen({ quizData }: QuizScreenProps) {
 
   const currentQuestion = config.questions[currentStep];
 
+  const handleAnswer = (questionId: number, value: string) => {
+    trackEvent(ANALYTICS_EVENTS.QUIZ_ANSWER, { 
+      quiz_id: config.id, 
+      question_id: questionId, 
+      answer: value 
+    });
+    setAnswer(questionId, value);
+  };
+
   return (
     <>
       <ProgressBar current={currentStep + 1} total={config.questions.length} />
+      
+      {/* Top Ad Banner */}
+      <AdSenseUnit slotId="1234567890" className="w-full max-w-md mx-auto" />
+
       <div className="flex-1 flex flex-col items-center justify-center p-4 w-full">
         <QuizCard
-          // Key ensures framer-motion animation triggers on change
           key={currentQuestion.id}
           question={currentQuestion.text}
         >
@@ -65,7 +83,7 @@ export function QuizScreen({ quizData }: QuizScreenProps) {
             <OptionButton
               key={index}
               text={option.text}
-              onClick={() => setAnswer(currentQuestion.id, option.value)}
+              onClick={() => handleAnswer(currentQuestion.id, option.value)}
               selected={answers[currentQuestion.id] === option.value}
             />
           ))}
