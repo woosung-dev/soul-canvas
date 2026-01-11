@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+
 import '../globals.css';
 import { i18n, type Locale } from '@/i18n-config';
+import { GoogleAnalytics, GoogleAdSense } from '@next/third-parties/google';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -22,19 +24,27 @@ export async function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
-export default function RootLayout({
+// Placeholder IDs - replace with real ones in .env
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-PLACEHOLDER';
+const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-PLACEHOLDER';
+
+export default async function RootLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }>) {
+  const { lang } = await params;
+  
   return (
-    <html lang={params.lang}>
+    <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100`}
       >
         {children}
+        <GoogleAnalytics gaId={GA_ID} />
+        <GoogleAdSense publisherId={ADSENSE_ID} />
       </body>
     </html>
   );
