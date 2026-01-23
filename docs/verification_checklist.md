@@ -69,15 +69,40 @@
 
 ---
 
-## 🔴 미구현 항목 (Step 5, 6 범위)
+## ✅ Step 5: 인프라 & 배포 설정
 
-| 항목                      | 상태        | 예정 Step    |
-| ------------------------- | ----------- | ------------ |
-| PostgreSQL 연동           | ❌ 미구현   | Step 5       |
-| GitHub Actions 워크플로우 | ❌ 미구현   | Step 5       |
-| Google AdSense 통합       | ❌ 미구현   | Step 6       |
-| GA4 Analytics 통합        | ❌ 미구현   | Step 6       |
-| 카카오 SDK 완전 연동      | ⚠️ 부분완료 | API Key 필요 |
+| 요구사항                      | 상태    | 구현 파일/경로                 | 비고                        |
+| ----------------------------- | ------- | ------------------------------ | --------------------------- |
+| Nginx 프로덕션 설정           | ✅ PASS | `nginx.conf`                   | 정적 자산 캐싱 최적화       |
+| GitHub Actions 워크플로우     | ✅ PASS | `.github/workflows/deploy.yml` | Docker 빌드/푸시 자동화     |
+| Docker 멀티스테이지 빌드      | ✅ PASS | `Dockerfile`                   | Alpine 기반, 이미지 최적화  |
+| Docker Compose 오케스트레이션 | ✅ PASS | `docker-compose.yml`           | App + Nginx + Postgres 구성 |
+
+### Step 5 결론: **PASS** (4/4)
+
+---
+
+## ⚠️ Step 6: 애널리틱스 & 수익화
+
+| 요구사항           | 상태       | 구현 파일/경로                          | 비고                         |
+| ------------------ | ---------- | --------------------------------------- | ---------------------------- |
+| GA4 Analytics 통합 | ✅ PASS    | `src/lib/analytics.ts`, `layout.tsx`    | @next/third-parties 사용     |
+| Google AdSense     | ⚠️ PARTIAL | `src/components/ads/AdSenseUnit.tsx`    | 코드 완료, 실제 ID 설정 필요 |
+| 카카오 SDK 완전    | ⚠️ PARTIAL | `src/components/share/ShareButtons.tsx` | API Key 연동 필요            |
+
+### Step 6 결론: **PARTIAL** (1/3 완료, 2/3 설정 필요)
+
+---
+
+## 🔴 설정 필요 항목
+
+| 항목                    | 상태        | 필요 작업                          |
+| ----------------------- | ----------- | ---------------------------------- |
+| GA4 Measurement ID      | ⚠️ 설정필요 | .env에 NEXT_PUBLIC_GA_ID 추가      |
+| AdSense Publisher ID    | ⚠️ 설정필요 | .env에 NEXT_PUBLIC_ADSENSE_ID 추가 |
+| AdSense Slot IDs        | ⚠️ 설정필요 | 광고 단위별 실제 Slot ID 설정      |
+| 카카오 SDK App Key      | ⚠️ 선택사항 | 카카오톡 공유 기능 활성화 시       |
+| PostgreSQL 데이터베이스 | ❌ 미사용   | 현재 정적 데이터 파일 사용         |
 
 ---
 
@@ -115,11 +140,15 @@ soul-canvas/
 
 ## ✅ 최종 요약
 
-| Step   | 상태    | 완료율                |
-| ------ | ------- | --------------------- |
-| Step 1 | ✅ 완료 | 100%                  |
-| Step 2 | ✅ 완료 | 100%                  |
-| Step 3 | ✅ 완료 | 100%                  |
-| Step 4 | ✅ 완료 | 86% (카카오 SDK 제외) |
+| Step   | 상태        | 완료율                |
+| ------ | ----------- | --------------------- |
+| Step 1 | ✅ 완료     | 100%                  |
+| Step 2 | ✅ 완료     | 100%                  |
+| Step 3 | ✅ 완료     | 100%                  |
+| Step 4 | ✅ 완료     | 86% (카카오 SDK 제외) |
+| Step 5 | ✅ 완료     | 100%                  |
+| Step 6 | ⚠️ 부분완료 | 33% (설정 필요)       |
 
-_마지막 업데이트: 2026-01-10_
+**전체 진행률: 86%** (핵심 기능 완료, 환경 설정 및 콘텐츠 확장 필요)
+
+_마지막 업데이트: 2026-01-23_
