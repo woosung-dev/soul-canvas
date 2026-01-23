@@ -1,28 +1,24 @@
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { loveStyleQuiz } from '@/data/quizzes/love-style';
+import { quizRegistry } from '@/data/quizzes';
 import { ResultCard } from '@/components/quiz/ResultCard';
 import { ShareButtons } from '@/components/share/ShareButtons';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { QuizHeader } from '@/components/quiz/QuizHeader';
+import { QuizConfig, Result } from '@/types/quiz';
 
 type Props = {
   params: Promise<{ lang: string; quizId: string; resultId: string }>;
 };
 
-// Map of quiz IDs to their config
-const quizzes: Record<string, any> = {
-  'love-style': loveStyleQuiz,
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { quizId, resultId } = await params;
-  const quiz = quizzes[quizId];
+  const quiz: QuizConfig | undefined = quizRegistry[quizId];
   
   if (!quiz) return {};
 
-  const result = quiz.results.find((r: any) => r.value === resultId);
+  const result: Result | undefined = quiz.results.find((r) => r.value === resultId);
   if (!result) return {};
 
   const title = `${result.title} | ${quiz.title}`;
@@ -66,11 +62,11 @@ import { AdSenseUnit } from '@/components/ads/AdSenseUnit';
 
 export default async function ResultPage({ params }: Props) {
   const { quizId, resultId, lang } = await params;
-  const quiz = quizzes[quizId];
+  const quiz: QuizConfig | undefined = quizRegistry[quizId];
 
   if (!quiz) notFound();
 
-  const result = quiz.results.find((r: any) => r.value === resultId);
+  const result: Result | undefined = quiz.results.find((r) => r.value === resultId);
   if (!result) notFound();
 
   return (
