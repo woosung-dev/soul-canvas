@@ -15,7 +15,14 @@ export function calculateResult(config: QuizConfig, answers: Record<number, stri
   let maxCount = 0;
   let resultValue = '';
 
-  for (const [value, count] of Object.entries(counts)) {
+  // Iterate through config.results to ensure tie-breaking preference matches the config order
+  // and efficiently find the winner among valid results.
+  for (const result of config.results) {
+    const value = result.value;
+    const count = counts[value] || 0;
+    
+    // Strict greater than ensures that if we have a tie, the one appearing earlier 
+    // in config.results (checked first) is kept as the winner.
     if (count > maxCount) {
       maxCount = count;
       resultValue = value;

@@ -3,7 +3,7 @@ import { Locale } from '@/i18n-config';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { QuizHeader } from '@/components/quiz/QuizHeader';
 import { QuizList } from '@/components/quiz/QuizList';
-import { allQuizzes } from '@/data/quizzes';
+import { quizService } from '@/services/quiz-service';
 
 export default async function Home({
   params,
@@ -12,6 +12,7 @@ export default async function Home({
 }) {
   const { lang } = await params;
   const dictionary = await getDictionary(lang);
+  const quizzes = await quizService.getAllQuizzes();
 
   return (
     <PageLayout>
@@ -25,7 +26,7 @@ export default async function Home({
             Discover your vibe with our latest personality tests.
           </p>
         </div>
-        <QuizList quizzes={allQuizzes} />
+        <QuizList quizzes={quizzes} />
       </div>
     </PageLayout>
   );

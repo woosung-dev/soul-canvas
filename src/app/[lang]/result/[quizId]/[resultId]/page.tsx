@@ -1,7 +1,7 @@
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { quizRegistry } from '@/data/quizzes';
+import { quizService } from '@/services/quiz-service';
 import { ResultCard } from '@/components/quiz/ResultCard';
 import { ShareButtons } from '@/components/share/ShareButtons';
 import { PageLayout } from '@/components/layout/PageLayout';
@@ -14,7 +14,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { quizId, resultId } = await params;
-  const quiz: QuizConfig | undefined = quizRegistry[quizId];
+  const quiz: QuizConfig | null = await quizService.getQuizById(quizId);
   
   if (!quiz) return {};
 
@@ -62,7 +62,7 @@ import { AdSenseUnit } from '@/components/ads/AdSenseUnit';
 
 export default async function ResultPage({ params }: Props) {
   const { quizId, resultId, lang } = await params;
-  const quiz: QuizConfig | undefined = quizRegistry[quizId];
+  const quiz: QuizConfig | null = await quizService.getQuizById(quizId);
 
   if (!quiz) notFound();
 

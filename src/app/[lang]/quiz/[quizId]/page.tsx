@@ -2,7 +2,7 @@ import { Locale } from '@/i18n-config';
 import { PageLayout } from '@/components/layout/PageLayout';
 import { QuizScreen } from '@/components/quiz/QuizScreen';
 import { QuizHeader } from '@/components/quiz/QuizHeader';
-import { quizRegistry } from '@/data/quizzes';
+import { quizService } from '@/services/quiz-service';
 import { notFound } from 'next/navigation';
 
 export default async function QuizPage({
@@ -11,7 +11,7 @@ export default async function QuizPage({
   params: Promise<{ lang: Locale; quizId: string }>;
 }) {
   const { lang, quizId } = await params;
-  const quiz = quizRegistry[quizId];
+  const quiz = await quizService.getQuizById(quizId);
 
   if (!quiz) notFound();
 

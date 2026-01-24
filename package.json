@@ -11,6 +11,8 @@
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.7.5",
     "@next/third-parties": "^16.1.1",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.91.1",
     "@vercel/og": "^0.8.6",
     "clsx": "^2.1.1",
     "framer-motion": "^12.24.12",
