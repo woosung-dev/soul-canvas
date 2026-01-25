@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 
 import '../globals.css';
 import { i18n, type Locale } from '@/i18n-config';
-import { GoogleAnalytics, GoogleAdSense } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,7 +26,7 @@ export async function generateStaticParams() {
 
 // Placeholder IDs - replace with real ones in .env
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-PLACEHOLDER';
-const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-PLACEHOLDER';
+// const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID || 'ca-pub-PLACEHOLDER';
 
 export default async function RootLayout({
   children,
@@ -44,7 +44,7 @@ export default async function RootLayout({
       >
         {children}
         <GoogleAnalytics gaId={GA_ID} />
-        <GoogleAdSense publisherId={ADSENSE_ID} />
+        {/* <GoogleAdSense publisherId={ADSENSE_ID} /> */}
       </body>
     </html>
   );
