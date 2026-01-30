@@ -20,10 +20,10 @@ export class StaticQuizService implements QuizService {
   }
 }
 
-import { SupabaseQuizService } from './supabase-quiz-service';
+// import { SupabaseQuizService } from './supabase-quiz-service';
 
 // Singleton instance using Supabase
-export const quizService = new SupabaseQuizService();
+// export const quizService = new SupabaseQuizService();
 
 // Legacy Static Service (Keep for reference or fallback if needed)
-// export const quizService = new StaticQuizService();
+export const quizService = new StaticQuizService();
