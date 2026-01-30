@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  app:
+    # Use the image built by GitHub Actions
+    # NOTE: The user must export DOCKER_USERNAME on the server or replace this variable
+    image: ${DOCKER_USERNAME}/vibe-check:latest
+    container_name: soul-canvas-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Add other environment variables here or use env_file
+      - NEXT_PUBLIC_GA_ID=${NEXT_PUBLIC_GA_ID}
+      - NEXT_PUBLIC_ADSENSE_ID=${NEXT_PUBLIC_ADSENSE_ID}
+      - NEXT_PUBLIC_KAKAO_APP_KEY=${NEXT_PUBLIC_KAKAO_APP_KEY}
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: soul-canvas-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: soul-canvas-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: vibecheck
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
