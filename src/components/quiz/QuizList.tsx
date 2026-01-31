@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { QuizConfig } from '@/types/quiz';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 interface QuizListProps {
   quizzes: QuizConfig[];
@@ -10,6 +10,8 @@ interface QuizListProps {
 
 export function QuizList({ quizzes }: QuizListProps) {
   const router = useRouter();
+  const params = useParams();
+  const lang = params.lang as string;
 
   return (
     <div className="w-full max-w-md mx-auto p-4 space-y-4">
@@ -19,7 +21,7 @@ export function QuizList({ quizzes }: QuizListProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          onClick={() => router.push(`/quiz/${quiz.id}`)}
+          onClick={() => router.push(`/${lang}/quiz/${quiz.id}`)}
           className="bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-sm border border-zinc-100 dark:border-zinc-800 cursor-pointer hover:shadow-md transition-shadow active:scale-95"
         >
           <div className="flex items-start justify-between">

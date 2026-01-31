@@ -38,9 +38,10 @@ export default async function RootLayout({
   const { lang } = await params;
   
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100`}
+        suppressHydrationWarning
       >
         {children}
         <GoogleAnalytics gaId={GA_ID} />

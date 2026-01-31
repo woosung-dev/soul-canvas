@@ -3,6 +3,8 @@
 import { useQuizStore } from '@/store/quiz-store';
 import { Header } from '@/components/layout/Header';
 
+import { LanguageToggle } from '@/components/layout/LanguageToggle';
+
 interface QuizHeaderProps {
   title: string;
 }
@@ -21,6 +23,7 @@ export function QuizHeader({ title }: QuizHeaderProps) {
           </button>
         ) : null
       }
+      rightIcon={<LanguageToggle />}
     />
   );
 }
