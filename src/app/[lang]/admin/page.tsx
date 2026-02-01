@@ -1,8 +1,13 @@
 import { quizService } from '@/services/quiz-service';
 import Link from 'next/link';
-import { QuizConfig } from '@/types/quiz';
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const locale = (lang === 'en' ? 'en' : 'ko');
   const quizzes = await quizService.getAllQuizzes();
 
   return (
@@ -17,7 +22,7 @@ export default async function AdminDashboard() {
           </p>
         </div>
         <Link
-          href="/admin/quiz/new"
+          href={`/${lang}/admin/quiz/new`}
           className="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors shadow-sm"
         >
           + Create New Quiz
@@ -37,10 +42,13 @@ export default async function AdminDashboard() {
             >
               <div>
                 <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                  {quiz.title}
+                  {quiz.title[locale]}
+                  <span className="text-xs font-normal text-zinc-400 ml-2">
+                     ({locale === 'ko' ? quiz.title.en : quiz.title.ko})
+                  </span>
                 </h3>
                 <p className="text-sm text-zinc-500 mt-1 line-clamp-1">
-                  {quiz.description}
+                  {quiz.description[locale]}
                 </p>
                 <div className="flex gap-3 mt-3 text-xs text-zinc-400 font-mono">
                   <span>ID: {quiz.id}</span>
@@ -53,7 +61,7 @@ export default async function AdminDashboard() {
               
               <div className="flex gap-2">
                 <Link
-                  href={`/admin/quiz/${quiz.id}`}
+                  href={`/${lang}/admin/quiz/${quiz.id}`}
                   className="px-3 py-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300 bg-zinc-100 dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 rounded-md transition-colors"
                 >
                   Edit
