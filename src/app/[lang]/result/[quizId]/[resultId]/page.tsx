@@ -13,7 +13,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { quizId, resultId } = await params;
+  const { quizId, resultId, lang } = await params;
   const quiz: QuizConfig | null = await quizService.getQuizById(quizId);
   
   if (!quiz) return {};
@@ -21,14 +21,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result: Result | undefined = quiz.results.find((r) => r.value === resultId);
   if (!result) return {};
 
-  const title = `${result.title} | ${quiz.title}`;
-  const description = result.description;
+  const locale = lang === 'en' ? 'en' : 'ko';
+  const resultTitle = result.title[locale];
+  const resultDesc = result.description[locale];
+  const quizTitle = quiz.title[locale];
+
+  const title = `${resultTitle} | ${quizTitle}`;
+  const description = resultDesc;
   
   // Construct OG Image URL
   // e.g. /api/og?title=...&desc=...&type=...
   const ogUrl = new URL(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/og`);
-  ogUrl.searchParams.set('title', result.title);
-  ogUrl.searchParams.set('desc', result.description);
+  ogUrl.searchParams.set('title', resultTitle);
+  ogUrl.searchParams.set('desc', resultDesc);
   ogUrl.searchParams.set('type', result.value);
 
   return {
@@ -69,22 +74,24 @@ export default async function ResultPage({ params }: Props) {
   const result: Result | undefined = quiz.results.find((r) => r.value === resultId);
   if (!result) notFound();
 
+  const locale = lang === 'en' ? 'en' : 'ko';
+  
   return (
     <PageLayout>
-      <QuizHeader title="VibeCheck" />
+      <QuizHeader title={quiz.title[locale]} />
       <div className="flex-1 flex flex-col items-center justify-center p-4 w-full animate-in fade-in duration-700">
-        <ResultCard result={result} />
+        <ResultCard result={result} lang={locale} />
         
         {/* Ad Unit Middle */}
         <AdSenseUnit slotId="0987654321" className="w-full max-w-sm mt-6" />
 
-        <ShareButtons />
+        <ShareButtons lang={locale} />
         
         <a 
             href={`/${lang}`}
             className="mt-8 text-zinc-500 underline decoration-zinc-300 underline-offset-4 hover:text-rose-500 transition-colors"
         >
-            다른 테스트 하러 가기
+            {locale === 'en' ? 'Try another test' : '다른 테스트 하러 가기'}
         </a>
       </div>
     </PageLayout>

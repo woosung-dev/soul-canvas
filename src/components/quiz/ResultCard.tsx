@@ -5,9 +5,12 @@ import { motion } from 'framer-motion';
 
 interface ResultCardProps {
   result: Result;
+  lang: string;
 }
 
-export function ResultCard({ result }: ResultCardProps) {
+export function ResultCard({ result, lang }: ResultCardProps) {
+  const locale = lang === 'en' ? 'en' : 'ko';
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -19,10 +22,10 @@ export function ResultCard({ result }: ResultCardProps) {
         🎁
       </div>
       <h1 className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-50 keep-all">
-        {result.title}
+        {result.title[locale]}
       </h1>
       <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-lg keep-all">
-        {result.description}
+        {result.description[locale]}
       </p>
     </motion.div>
   );

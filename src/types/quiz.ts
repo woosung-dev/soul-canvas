@@ -1,24 +1,29 @@
+export interface LocalizedString {
+  ko: string;
+  en: string;
+}
+
 export interface Option {
-  text: string;
+  text: LocalizedString;
   value: string;
 }
 
 export interface Question {
   id: number;
-  text: string;
+  text: LocalizedString;
   options: Option[];
 }
 
 export interface Result {
   value: string;
-  title: string;
-  description: string;
+  title: LocalizedString;
+  description: LocalizedString;
 }
 
 export interface QuizConfig {
   id: string;
-  title: string;
-  description: string;
+  title: LocalizedString;
+  description: LocalizedString;
   questions: Question[];
   results: Result[];
 }

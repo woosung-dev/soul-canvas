@@ -17,7 +17,7 @@ export default async function QuizPage({
 
   return (
     <PageLayout>
-      <QuizHeader title={quiz.title} />
+      <QuizHeader title={quiz.title[lang === 'en' ? 'en' : 'ko']} />
       <QuizScreen quizData={quiz} />
     </PageLayout>
   );

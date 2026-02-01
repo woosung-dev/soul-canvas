@@ -20,6 +20,7 @@ export function QuizScreen({ quizData }: QuizScreenProps) {
   const { currentStep, config, setQuiz, setAnswer, answers } = useQuizStore();
   const router = useRouter();
   const params = useParams(); // to get current lang
+  const lang = (params?.lang as string) || 'ko';
 
   // Initialize quiz store and track start
   useEffect(() => {
@@ -77,12 +78,12 @@ export function QuizScreen({ quizData }: QuizScreenProps) {
       <div className="flex-1 flex flex-col items-center justify-center p-4 w-full">
         <QuizCard
           key={currentQuestion.id}
-          question={currentQuestion.text}
+          question={currentQuestion.text[lang === 'en' ? 'en' : 'ko']}
         >
           {currentQuestion.options.map((option, index) => (
             <OptionButton
               key={index}
-              text={option.text}
+              text={option.text[lang === 'en' ? 'en' : 'ko']}
               onClick={() => handleAnswer(currentQuestion.id, option.value)}
               selected={answers[currentQuestion.id] === option.value}
             />

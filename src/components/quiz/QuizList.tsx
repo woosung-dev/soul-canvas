@@ -27,10 +27,10 @@ export function QuizList({ quizzes }: QuizListProps) {
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-                {quiz.title}
+                {quiz.title[lang === 'en' ? 'en' : 'ko']}
               </h3>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
-                {quiz.description}
+                {quiz.description[lang === 'en' ? 'en' : 'ko']}
               </p>
             </div>
             <div className="w-10 h-10 rounded-full bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center flex-shrink-0 ml-4">
