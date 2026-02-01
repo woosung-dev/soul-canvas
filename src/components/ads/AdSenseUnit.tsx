@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 interface AdSenseUnitProps {
@@ -19,15 +19,14 @@ export function AdSenseUnit({
   style,
 }: AdSenseUnitProps) {
   const pathname = usePathname();
-  const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
     try {
       if (typeof window !== 'undefined') {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
-    } catch (err: any) {
-      console.error('AdSense error:', err?.message);
+    } catch (err: unknown) {
+      console.error('AdSense error:', err instanceof Error ? err.message : String(err));
     }
   }, [pathname]); // Attempt refresh on path change if component stays mounted
 
@@ -35,6 +34,7 @@ export function AdSenseUnit({
     <div className={`ads-container overflow-hidden my-4 ${className || ''}`} aria-label="Advertisement">
         <div className="text-xs text-center text-zinc-400 mb-1">AD</div>
         <ins
+            key={pathname} // Force re-render on route change to ensure new ad request works
             className="adsbygoogle block"
             style={style || { display: 'block' }}
             data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
